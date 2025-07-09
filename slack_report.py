@@ -1,4 +1,3 @@
-
 from jira import JIRA
 from datetime import datetime, timedelta
 import os
@@ -38,7 +37,7 @@ mensagem += '\\n'.join([f\"• {d}\" for d in destaques])
 mensagem += \"\\n\\n🔁 Temas Repetidos:\\n\" + '\\n'.join([f\"• {k.title()} ({v})\" for k, v in frequencia.items()])
 mensagem += \"\\n\\n📌 Observação: Seguimos monitorando os sistemas.\"
 
-# Salva no repositório
+# Salva o relatório como arquivo
 with open(\"relatorio.txt\", \"w\", encoding=\"utf-8\") as f:
     f.write(mensagem.strip())
 
