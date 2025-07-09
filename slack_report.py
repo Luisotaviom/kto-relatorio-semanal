@@ -11,7 +11,7 @@ jira = JIRA(server='https://SEUJIRA.atlassian.net', basic_auth=(JIRA_EMAIL, JIRA
 
 # Define o período (últimos 7 dias)
 inicio = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
-query = f'project = TEC AND created >= \"{inicio}\" ORDER BY created DESC'
+query = f'project = TEC AND created >= "{inicio}" ORDER BY created DESC'
 issues = jira.search_issues(query, maxResults=50)
 
 # KPIs
@@ -32,13 +32,21 @@ resumos = [i.fields.summary.lower() for i in issues]
 frequencia = {k: sum(k in r for r in resumos) for k in keywords if sum(k in r for r in resumos) > 0}
 
 # Mensagem final
-mensagem = f\"\"\"\n📊 Relatório Semanal – Plataforma iGaming ({inicio} a {datetime.now().strftime('%Y-%m-%d')})\n\n• Tickets Criados: {total}\n• Tickets Resolvidos: {resolvidos}\n• Em Aberto: {abertos}\n\n🔥 Destaques da Semana:\n\"\"\"
-mensagem += '\\n'.join([f\"• {d}\" for d in destaques])
-mensagem += \"\\n\\n🔁 Temas Repetidos:\\n\" + '\\n'.join([f\"• {k.title()} ({v})\" for k, v in frequencia.items()])
-mensagem += \"\\n\\n📌 Observação: Seguimos monitorando os sistemas.\"
+mensagem = f"""
+📊 Relatório Semanal – Plataforma iGaming ({inicio} a {datetime.now().strftime('%Y-%m-%d')})
+
+• Tickets Criados: {total}
+• Tickets Resolvidos: {resolvidos}
+• Em Aberto: {abertos}
+
+🔥 Destaques da Semana:
+""" + '\n'.join([f"• {d}" for d in destaques]) + "\n\n"
+
+mensagem += "🔁 Temas Repetidos:\n" + '\n'.join([f"• {k.title()} ({v})" for k, v in frequencia.items()]) + "\n\n"
+mensagem += "📌 Observação: Seguimos monitorando os sistemas."
 
 # Salva o relatório como arquivo
-with open(\"relatorio.txt\", \"w\", encoding=\"utf-8\") as f:
+with open("relatorio.txt", "w", encoding="utf-8") as f:
     f.write(mensagem.strip())
 
-print(\"✅ Relatório salvo como relatorio.txt\")
+print("✅ Relatório salvo como relatorio.txt")
