@@ -2,7 +2,7 @@ name: Gerar Relatório Semanal
 
 on:
   schedule:
-    - cron: '0 12 * * 1'  # Toda segunda-feira às 9h BRT (12h UTC)
+    - cron: '0 12 * * 1'  # Segunda-feira às 9h BRT (12h UTC)
   workflow_dispatch:
 
 jobs:
